@@ -8,17 +8,17 @@ import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
 public class DatabaseHelper extends SQLiteOpenHelper {
-    public static final int DATABASE_VERSION = 1;
+    public static final int DATABASE_VERSION = 4;
     public static final String DATABASE_NAME = "Contact2018.db";
     public static final String TABLE_NAME = "Contact2018_table";
     public static final String ID = "ID";
     public final static String COLUMN_NAME_CONTACT = "contact";
-    public final static String COLUMN_Number_CONTACT = "contact";
-    public final static String COLUMN_EMAIL_CONTACT = "contact";
+    public final static String COLUMN_NUMBER_CONTACT = "Number";
+    public final static String COLUMN_EMAIL_CONTACT = "Email";
     public final static String SQL_CREATE_ENTRIES =
             "CREATE TABLE " + TABLE_NAME + " (" +
                     ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
-                    COLUMN_NAME_CONTACT + " TEXT)";
+                    COLUMN_NAME_CONTACT + " TEXT , " + COLUMN_NUMBER_CONTACT + " TEXT , " + COLUMN_EMAIL_CONTACT + " TEXT)";
     public static final String SQL_DELETE_ENTRIES =
             "DROP TABLE IF EXISTS " + TABLE_NAME;
     public DatabaseHelper(Context context){
@@ -44,7 +44,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getWritableDatabase();
         android.content.ContentValues contentValue = new android.content.ContentValues();
         contentValue.put(COLUMN_NAME_CONTACT, name);
-        contentValue.put(COLUMN_Number_CONTACT, number);
+        contentValue.put(COLUMN_NUMBER_CONTACT, number);
         contentValue.put(COLUMN_EMAIL_CONTACT, email);
         long result = db.insert(TABLE_NAME, null, contentValue);
         if (result == -1){

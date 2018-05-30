@@ -1,5 +1,6 @@
 package com.example.aroras2529.mycontactapp;
 
+import android.content.Intent;
 import android.database.Cursor;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -45,6 +46,10 @@ public class MainActivity extends AppCompatActivity {
         StringBuffer buffer = new StringBuffer();
         while (res.moveToNext()){
             //Append res column 0123
+            for(int i = 0; i < 4; i++){
+                buffer.append(res.getColumnName(i) + ": " + res.getString(i) + "\n" );
+            }
+            buffer.append("\n");
         }
         Log.d("MyContactApp", "MainActivity: viewData: assembled stringbuffer");
         showMessage("Data", buffer.toString());
@@ -58,5 +63,12 @@ public class MainActivity extends AppCompatActivity {
         builder.setTitle(title);
         builder.setMessage(message);
         builder.show();
+    }
+    public static final String Extra_Message = "com.example.aroras2529.mycontactapp.MESSAGE";
+    public void SearchRecord (View view){
+        Log.d("MyContactApp", "MainActivity: Launching SearchActivity");
+        Intent intent = new Intent (this, SearchActivity.class);
+        intent.putExtra(Extra_Message, editName.getText().toString());
+        startActivity(intent);
     }
 }
