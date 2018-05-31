@@ -2,6 +2,7 @@ package com.example.aroras2529.mycontactapp;
 
 import android.content.Intent;
 import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -9,6 +10,8 @@ import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
+
+import static com.example.aroras2529.mycontactapp.DatabaseHelper.TABLE_NAME;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -30,7 +33,7 @@ public class MainActivity extends AppCompatActivity {
     public void addData(View view){
         Log.d("MyContactApp", "MainActivity: Add contact button pressed");
         boolean isInserted = myDb.insertData(editName.getText().toString(), editNumber.getText().toString(), editEmail.getText().toString());
-        if(isInserted = true){
+        if(isInserted == true){
             Toast.makeText(MainActivity.this, "Success - contact inserted",Toast.LENGTH_LONG).show();
         }
         else{
@@ -65,10 +68,29 @@ public class MainActivity extends AppCompatActivity {
         builder.show();
     }
     public static final String Extra_Message = "com.example.aroras2529.mycontactapp.MESSAGE";
-    public void SearchRecord (View view){
+    public void SearchRecord (View view) {
         Log.d("MyContactApp", "MainActivity: Launching SearchActivity");
-        Intent intent = new Intent (this, SearchActivity.class);
-        intent.putExtra(Extra_Message, editName.getText().toString());
+        Intent intent = new Intent(this, SearchActivity.class);
+        Cursor res = myDb.getAllData();
+        StringBuffer buff = new StringBuffer();
+        String name = editName.getText().toString();
+        while (res.moveToNext()) {
+            String ID = res.getString(0);
+            String Names = res.getString(1);
+            String Numbers = res.getString(2);
+            String Emails = res.getString(3);
+            if (name.equals(Names)) {
+                buff.append(ID + "\n" + Names + "\n" + Numbers + "\n" + Emails + "\n" + "\n");
+
+            }
+
+        }
+        if (buff.length() == 0){
+            buff.append("Sorry, no results found");
+        }
+        String retur = buff.toString();
+        intent.putExtra(Extra_Message, retur);
         startActivity(intent);
     }
 }
+
